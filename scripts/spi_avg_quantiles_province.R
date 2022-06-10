@@ -15,7 +15,7 @@ aggregate(mean_observed_SPI6 ~ Province, forecast_mean, mean)
 
 ### Summary stats Mean SPI per province for each year
 library("dplyr")
-aa= forecast_mean %>%
+forecast_2020= forecast_mean %>%
   filter(Year == 2021) %>%
   group_by(Province,Quantile ) %>%
   summarise(mean_observed_SPI6 = median(mean_observed_SPI6, na.rm = TRUE),mean_mean_Forecasted_SPI6_belowQ = median(mean_mean_Forecasted_SPI6_belowQ, na.rm = TRUE))
@@ -29,21 +29,21 @@ aa= forecast_mean %>%
 #   theme_bw() + theme(strip.text = element_text(size = rel(1.1)))
 
 library("ggplot2")
-ggplot(subset(aa, Province != "NA"),
+ggplot(subset(forecast_2020, Province != "NA"),
        aes(x = Quantile, y = mean_mean_Forecasted_SPI6_belowQ, color = Province)) +
   geom_line(lwd = 1, show.legend = FALSE) + facet_wrap(~ Province) +
-  theme_bw() + theme(strip.text = element_text(size = rel(1.1)))+
+  theme_bw() + theme(strip.text = element_text(size = rel(1.1)))#+
   #theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-lifeExp_plot <- ggplot(data = americas, mapping = aes(x = year, y = lifeExp, color=continent)) +
-  geom_line() + facet_wrap( ~ country) +
+forecast_2020_plot <- ggplot(data = forecast_2020, mapping = aes(x = Quantile, y = mean_mean_Forecasted_SPI6_belowQ, color=Province)) +
+  geom_line() + facet_wrap( ~ Province) +
   labs(
-    x = "Year",              # x axis title
-    y = "Life expectancy",   # y axis title
-    title = "Figure 1",      # main title of figure
-    color = "Continent"      # title of legend
+    x = "Quantile",              # x axis title
+    y = "SPI",   # y axis title
+    title = "SPI for province and quantile",      # main title of figure
+    color = "Province"      # title of legend
   ) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-ggsave(filename = "results/lifeExp.png", plot = lifeExp_plot, width = 12, height = 10, dpi = 300, units = "cm")
+ggsave(filename = "output/png/spei_quantile_Province.png", plot = forecast_2020_plot, width = 12, height = 10, dpi = 300, units = "cm")
 
