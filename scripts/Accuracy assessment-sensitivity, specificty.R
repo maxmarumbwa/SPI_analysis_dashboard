@@ -1,19 +1,3 @@
-## TEST edit
-# library(tidyverse)
-# library(ggplot2)
-# library(caret)
-# library(raster)
-# library(rgdal)
-# library(cvms)
-
-
-library(yardstick)
-library("Metrics")
-library(dplyr)
-library(readr)
-library(tidyverse)
-library(scales)
-library(tmap)
 
 p_median <- read.csv("data/Timeseries.FBI.Payout.median_shift.csv")
 province_district <- read.csv("data/province district.csv")%>%
